@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers\API;
-use App\Http\Controllers\Controller;
+
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
@@ -14,10 +15,10 @@ class ProductController extends Controller
 public function index()
 {
 $products = Product::all();
-return response()->json([
-"success" => true,
-"message" => "Product List",
-"data" => $products
+    return response()->json([
+        "success" => true,
+        "message" => "Product List",
+        "data" => $products
 ]);
 }
 /**
@@ -28,20 +29,22 @@ return response()->json([
 */
 public function store(Request $request)
 {
-$input = $request->all();
-$validator = Validator::make($input, [
-'name' => 'required',
-'detail' => 'required'
+    $input = $request->all();
+    $validator = Validator::make($input, [
+        'name' => 'required',
+        'detail' => 'required'
 ]);
-if($validator->fails()){
-return $this->sendError('Validation Error.', $validator->errors());       
-}
-$product = Product::create($input);
-return response()->json([
-"success" => true,
-"message" => "Product created successfully.",
-"data" => $product
-]);
+
+    if($validator->fails()){
+    return $this->sendError('Validation Error.', $validator->errors());       
+    }
+
+    $product = Product::create($input);
+    return response()->json([
+        "success" => true,
+        "message" => "Product created successfully.",
+        "data" => $product
+    ]);
 } 
 /**
 * Display the specified resource.
@@ -51,15 +54,17 @@ return response()->json([
 */
 public function show($id)
 {
-$product = Product::find($id);
-if (is_null($product)) {
-return $this->sendError('Product not found.');
-}
-return response()->json([
-"success" => true,
-"message" => "Product retrieved successfully.",
-"data" => $product
-]);
+    $product = Product::find($id);
+
+    if (is_null($product)) 
+    {
+        return $this->sendError('Product not found.');
+    }
+    return response()->json([
+        "success" => true,
+        "message" => "Product retrieved successfully.",
+        "data" => $product
+    ]);
 }
 /**
 * Update the specified resource in storage.
@@ -70,22 +75,24 @@ return response()->json([
 */
 public function update(Request $request, Product $product)
 {
-$input = $request->all();
-$validator = Validator::make($input, [
-'name' => 'required',
-'detail' => 'required'
-]);
-if($validator->fails()){
-return $this->sendError('Validation Error.', $validator->errors());       
-}
+    $input = $request->all();
+    $validator = Validator::make($input, [
+    'name' => 'required',
+    'detail' => 'required'
+    ])
+    ;
+    if($validator->fails())
+    {
+        return $this->sendError('Validation Error.', $validator->errors());       
+    }
 $product->name = $input['name'];
 $product->detail = $input['detail'];
 $product->save();
 return response()->json([
-"success" => true,
-"message" => "Product updated successfully.",
-"data" => $product
-]);
+        "success" => true,
+        "message" => "Product updated successfully.",
+        "data" => $product
+    ]);
 }
 /**
 * Remove the specified resource from storage.
@@ -97,9 +104,9 @@ public function destroy(Product $product)
 {
 $product->delete();
 return response()->json([
-"success" => true,
-"message" => "Product deleted successfully.",
-"data" => $product
-]);
+        "success" => true,
+        "message" => "Product deleted successfully.",
+        "data" => $product
+    ]);
 }
 }
